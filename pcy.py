@@ -31,7 +31,7 @@ def frequentsets(k,prev,s,bucketsize,f):
                 for v in list(i):
                     hash=hash+ord(v)
                     items.append(v)
-                dpairs[(hash^5)%20]= dpairs[(hash^5)%20]+1
+                dpairs[(hash^5)%bucketsize]= dpairs[(hash^5)%bucketsize]+1
 
         fitemsets1=[]
 
@@ -152,7 +152,7 @@ def frequentsets(k,prev,s,bucketsize,f):
                 index=0
                 for i in item:
                     index=index+ord(i)
-                hash=(index^5)%20
+                hash=(index^5)%bucketsize
                 ditemsets[hash]=ditemsets[hash]+1
 
 
