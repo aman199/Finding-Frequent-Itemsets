@@ -5,11 +5,10 @@ import sys
 
 
 def frequentsets(k,prev,s,f):
+    
     if k==1:
         dsingles={}
-
         f=open("new_toivonen.txt")
-
         for line in f:
             line=line.rstrip()
             items=line.split(',')
@@ -19,7 +18,6 @@ def frequentsets(k,prev,s,f):
                     dsingles[item]=dsingles[item]+1
                 else:
                     dsingles[item]=1
-
 
         fitemsets1=[]
         negative_border1=[]
@@ -33,7 +31,6 @@ def frequentsets(k,prev,s,f):
         fitemsets1.sort()
 
         candidatepairs=[]
-
         i=0
         while i<(len(fitemsets1)-1):
             j=i+1
@@ -53,7 +50,6 @@ def frequentsets(k,prev,s,f):
             p=itertools.combinations(items,2)
             for item in p:
                 item=list(item)
-
                 count=0
                 for j in item:
                     if j in fitemsets1:
@@ -69,7 +65,6 @@ def frequentsets(k,prev,s,f):
 
         negative_border.sort()
 
-
         fpairs=[]
         for item in pairs:
             if pairs[item]>=s:
@@ -81,8 +76,6 @@ def frequentsets(k,prev,s,f):
         for item in negative_border:
             if item not in fpairs:
                 neg_bor2.append(item)
-
-
 
         return fitemsets1,fpairs, negative_border1, neg_bor2
 
@@ -106,7 +99,6 @@ def frequentsets(k,prev,s,f):
                 if o not in candidateitems:
                     candidateitems.append(o)
 
-
     ditemsets={i:0 for i in range(len(candidateitems))}
 
     f=open("new_toivonen.txt")
@@ -121,7 +113,6 @@ def frequentsets(k,prev,s,f):
                 if o==i:
                     ditemsets[index]=ditemsets[index]+1
                     break
-
 
     fitems=[]
     ng_br=[]
@@ -139,7 +130,6 @@ def frequentsets(k,prev,s,f):
 def sample_pass(s):
     prev=[]
     k=1
-
     s=float(s)
     size=0.5
     f=open(sys.argv[1])
@@ -149,7 +139,7 @@ def sample_pass(s):
     for line in f:
         d[countlines]=line
         countlines=countlines+1
-
+        
     aman_items=[i for i in range(countlines)]
     random.shuffle(aman_items)
     for i in range(int(countlines*size)):
@@ -181,10 +171,7 @@ def sample_pass(s):
         neg_items[k]=res[1]
         k=k+1
 
-
-
     return ori_items,neg_items
-
 
 
 
@@ -248,22 +235,17 @@ def toivonen():
     dicts=sample_pass(s)
     if dicts == None:
         return toivonen()
-
     a,freq=whole_pass(dicts,s)
     if a==1:
-
         sys.stdout.write(str(iterations)+"\n")
         sys.stdout.write(str(size_perc)+"\n")
         max_len = max(map(len, freq))
-
         res = {i:[] for i in range(1, max_len + 1)}
-
         for item in freq:
             if len(item) == 1:
                 res[len(item)].append([item])
             else:
                 res[len(item)].append(item)
-
 
         for item in res:
             sys.stdout.write(str(res[item])+"\n")
