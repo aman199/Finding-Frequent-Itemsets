@@ -4,9 +4,9 @@ import sys
 
 prev=[]
 k=1
+f=open(sys.argv[1])
 s=int(sys.argv[2])
 bucketsize=int(sys.argv[3])
-f=open(sys.argv[1])
 
 def frequentsets(k,prev,s,bucketsize,f):
     if k==1:
@@ -34,18 +34,11 @@ def frequentsets(k,prev,s,bucketsize,f):
                 dpairs[(hash^5)%bucketsize]= dpairs[(hash^5)%bucketsize]+1
 
         fitemsets1=[]
-
         for item in dsingles:
             if dsingles[item]>=s:
                 fitemsets1.append(item)
 
         fitemsets1.sort()
-
-
-        # print("memory for item counts: ",len(dsingles)*8)
-        # print("memory for hash table 1 counts for size 2 itemsets: ",bucketsize*4)
-        # print(dpairs)
-        # print("frequent itemsets of size 1:",fitemsets1)
 
         sys.stdout.write("memory for item counts: "+str(len(dsingles)*8)+"\n")
         sys.stdout.write("memory for hash table 1 counts for size 2 itemsets: "+str(bucketsize*4)+"\n")
@@ -75,7 +68,6 @@ def frequentsets(k,prev,s,bucketsize,f):
         candidatepairs=[]
 
         for index,items in enumerate(bitmap1):
-
             if items==1:
                 for item in lookup2[index]:
                     count=0
@@ -101,6 +93,7 @@ def frequentsets(k,prev,s,bucketsize,f):
                     hash=hash+ord(v)
                     items.append(v)
                 dpairs2[(hash^7)%bucketsize]= dpairs2[(hash^7)%bucketsize]+1
+                
         bitmap2=[]
         for items in dpairs2:
             if dpairs2[items]>=s :
@@ -122,7 +115,6 @@ def frequentsets(k,prev,s,bucketsize,f):
             lookup22[(hash^7)%bucketsize].append(items)
 
         candidatepairs2=[]
-
         for index,items in enumerate(bitmap2):
             if items==1:
                 for item in lookup22[index]:
@@ -138,12 +130,6 @@ def frequentsets(k,prev,s,bucketsize,f):
             for pair in candidatepairs:
                 if pair in candidatepairs2:
                     candidatepair.append(pair)
-
-            # print("")
-            # print("memory for frequent itemsets of size 1: ",len(fitemsets1)*8)
-            # print("bitmap 1 size: ",bucketsize)
-            # print("memory for hash table 2 counts of size 2: ",bucketsize*4)
-            # print(dpairs2)
 
             sys.stdout.write("\n")
             sys.stdout.write("memory for frequent itemsets of size 1: "+str(len(fitemsets1)*8)+"\n")
@@ -171,13 +157,6 @@ def frequentsets(k,prev,s,bucketsize,f):
                     fpairs.append(candidatepair[item])
             fpairs.sort()
 
-            # print("")
-            # print("memory for frequent itemsets of size 1: ",len(fitemsets1)*8)
-            # print("bitmap 1 size: ",bucketsize)
-            # print("bitmap 2 size: ",bucketsize)
-            # print("memory for candidates of size 2: ",len(candidatepair)*12)
-            # print("frequent itemsets of size 2: ",fpairs)
-
             sys.stdout.write("\n")
             sys.stdout.write("memory for frequent itemsets of size 1: "+str(len(fitemsets1)*8)+"\n")
             sys.stdout.write("bitmap 1 size: "+str(bucketsize)+"\n")
@@ -185,16 +164,10 @@ def frequentsets(k,prev,s,bucketsize,f):
             sys.stdout.write("memory for candidates of size 2: "+str(len(candidatepair)*12)+"\n")
             sys.stdout.write("frequent itemsets of size 2: "+str(fpairs)+"\n")
 
-
-
             return fpairs
 
 
-#lookup3 lookup
-#dtriplets ditemsets
-    #triplets itemsets
-    #triples=setitems
-    #candidatetriples=candidateitemsets
+
     lookup=collections.defaultdict(list)
     a=[]
     for i in range(97,124):
@@ -221,7 +194,6 @@ def frequentsets(k,prev,s,bucketsize,f):
             for m in pairs:
                 if list(m) in prev:
                     count=count+1
-
             if count>=k:
                 index=0
                 for i in item:
@@ -249,8 +221,10 @@ def frequentsets(k,prev,s,bucketsize,f):
                         count=count+1
                 if count==k:
                     candidateitemsets.append(item)
+                    
     ditemsets2={i:0 for i in range(0,bucketsize)}
     f=open(sys.argv[1])
+    
     for line in f:
         line=line.rstrip()
         items=line.split(',')
@@ -269,6 +243,8 @@ def frequentsets(k,prev,s,bucketsize,f):
                     index=index+ord(i)
                 hash=(index^7)%bucketsize
                 ditemsets2[hash]=ditemsets2[hash]+1
+                
+                
     bitmap22=[]
     for items in ditemsets2:
         if ditemsets2[items]>=s:
@@ -290,7 +266,6 @@ def frequentsets(k,prev,s,bucketsize,f):
         lookupn[(hash^7)%bucketsize].append(items)
 
     candidateitemsets2=[]
-
     for index,items in enumerate(bitmap22):
         if items==1:
             for item in lookupn[index]:
@@ -308,20 +283,10 @@ def frequentsets(k,prev,s,bucketsize,f):
                 if pair in candidateitemsets2:
                     candidateitemset.append(pair)
 
-            # print("")
-            # print("memory for frequent itemsets of size ",k-1,": ",len(prev)*(k)*4)
-            # print("memory for hash table 1 counts for size ",k," itemsets: ",bucketsize*4)
-            # print(ditemsets)
-
             sys.stdout.write("\n")
             sys.stdout.write("memory for frequent itemsets of size "+str(k-1)+": "+str(len(prev)*(k)*4)+"\n")
             sys.stdout.write("memory for hash table 1 counts for size "+str(k)+" itemsets: "+str(bucketsize*4)+"\n")
             sys.stdout.write(str(ditemsets2)+"\n")
-
-            # print("")
-            # print("bitmap 1 size: ",bucketsize)
-            # print("memory for hash table 2 counts of size ",k,": ",bucketsize*4)
-            # print(ditemsets2)
 
             sys.stdout.write("\n")
             sys.stdout.write("bitmap 1 size: "+str(bucketsize)+"\n")
@@ -346,19 +311,12 @@ def frequentsets(k,prev,s,bucketsize,f):
                             setitems[index]=setitems[index]+1
                             break
 
-
             fitems=[]
             for item in setitems:
 
                 if setitems[item]>=s:
                     fitems.append(candidateitemset[item])
             fitems.sort()
-
-            # print("")
-            # print("bitmap 1 size: ",bucketsize)
-            # print("bitmap 2 size: ",bucketsize)
-            # print("memory for candidates of size ",k,": ",len(candidateitemset)*(k+1)*4)
-            # print("frequent itemsets of size ",k,": ",fitems)
 
             sys.stdout.write("\n")
             sys.stdout.write("bitmap 1 size: "+str(bucketsize)+"\n")
@@ -369,9 +327,6 @@ def frequentsets(k,prev,s,bucketsize,f):
             return fitems
     a=[]
     return a
-
-
-
 
 
 if k==1 and prev==[]:
